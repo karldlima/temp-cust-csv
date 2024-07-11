@@ -49,12 +49,13 @@ export const EmployeeForm = ({
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async ({ name, email, phone, occupation }) => {
       await handleSubmit({
         ...employee,
-        name: values.name,
-        email: values.email,
-        phone: values.phone,
+        name,
+        email,
+        phone,
+        occupation,
       });
     },
   });
@@ -132,7 +133,10 @@ export const EmployeeForm = ({
             justifyContent: "right !important;",
           }}
         >
-          <Button type="submit" disabled={formik.isSubmitting || loading}>
+          <Button
+            type="submit"
+            disabled={formik.isSubmitting || !formik.isValid || loading}
+          >
             Save
           </Button>
         </Grid>
