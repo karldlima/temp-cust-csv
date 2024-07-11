@@ -15,8 +15,11 @@ export const useExcelExport = () => {
       await writeEmployeesToExcel(employees);
       await sleep(2000);
       return;
-    } catch (e: any) {
-      setError("Could not export employees");
+    } catch (e) {
+      if (e instanceof Error) {
+        console.error(e);
+        setError("Could not export employees");
+      }
     } finally {
       setIsExporting(false);
     }
