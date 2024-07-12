@@ -5,21 +5,20 @@ import {
   DialogTitle,
   IconButton,
 } from "@mui/material";
+import { toast } from "react-toastify";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   createDefaultEmployee,
   EmployeeLineItem,
 } from "../../interfaces/employees";
 import { EmployeeForm } from "./EmployeeForm";
+import { EmployeeAction } from "../../hooks/useEmployee";
 
 interface EmployeeModalProps {
   loading: boolean;
   existingEmployee?: EmployeeLineItem;
-  createEmployee: (
-    employee: EmployeeLineItem,
-    assignEmployee?: boolean
-  ) => void;
-  updateEmployee: (employee: EmployeeLineItem) => void;
+  createEmployee: EmployeeAction;
+  updateEmployee: EmployeeAction;
   handleClose: () => void;
 }
 
@@ -48,11 +47,12 @@ export default function EmployeeModal({
           loading={loading}
           employee={existingEmployee || createDefaultEmployee()}
           handleSubmit={async (employee: EmployeeLineItem): Promise<void> => {
-            if (existingEmployee) {
-              await updateEmployee(employee);
-            } else {
-              await createEmployee(employee);
-            }
+            const actionMethod = existingEmployee
+              ? updateEmployee
+              : createEmployee;
+            actionMethod(employee).then(
+              (status) => typeof status === "string" && toast.success(status)
+            );
             handleClose();
           }}
         />

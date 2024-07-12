@@ -2,6 +2,10 @@ import * as React from "react";
 import { EmployeeLineItem } from "../interfaces/employees";
 import { sleep } from "../utils/sleep";
 
+export type EmployeeAction = (
+  employee: EmployeeLineItem
+) => Promise<string | Error>;
+
 export const useEmployee = () => {
   const [employees, setEmployees] = React.useState<EmployeeLineItem[]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -22,39 +26,55 @@ export const useEmployee = () => {
     }
   };
 
-  const createEmployee = async (employee: EmployeeLineItem): Promise<void> => {
+  const handleEmployeeAction = async (
+    employee: EmployeeLineItem,
+    action: (employee: EmployeeLineItem) => void,
+    successMessage: string,
+    errorMessage: string
+  ): Promise<string | Error> => {
     try {
       setIsLoading(true);
       await sleep(2000);
-      setEmployees([...employees, { ...employee }]);
+      action(employee);
+      setIsLoading(false);
+      return successMessage;
     } catch (e) {
       if (e instanceof Error) {
         console.error(e);
-        setError("Could not create employee");
+        setError(errorMessage);
       }
-    } finally {
       setIsLoading(false);
+      return new Error();
     }
   };
 
-  const updateEmployee = async (employee: EmployeeLineItem): Promise<void> => {
-    try {
-      setIsLoading(true);
-      await sleep(2000);
-      const employeeIndex = employees.findIndex(({ id }) => id === employee.id);
-      const updatedEmployees = [...employees];
-      if (employeeIndex > -1) {
-        updatedEmployees[employeeIndex] = employee;
-      }
-      setEmployees(updatedEmployees);
-    } catch (e) {
-      if (e instanceof Error) {
-        console.error(e);
-        setError("Could not update employee");
-      }
-    } finally {
-      setIsLoading(false);
-    }
+  const createEmployee: EmployeeAction = async (
+    employee: EmployeeLineItem
+  ): Promise<string | Error> => {
+    return handleEmployeeAction(
+      employee,
+      (emp) => setEmployees([...employees, { ...emp }]),
+      `Employee ${employee.name} has been added`,
+      "Could not create employee"
+    );
+  };
+
+  const updateEmployee: EmployeeAction = async (
+    employee: EmployeeLineItem
+  ): Promise<string | Error> => {
+    return handleEmployeeAction(
+      employee,
+      (emp) => {
+        const employeeIndex = employees.findIndex(({ id }) => id === emp.id);
+        const updatedEmployees = [...employees];
+        if (employeeIndex > -1) {
+          updatedEmployees[employeeIndex] = emp;
+        }
+        setEmployees(updatedEmployees);
+      },
+      `Employee ${employee.name} has been updated`,
+      "Could not update employee"
+    );
   };
 
   React.useEffect(() => {
