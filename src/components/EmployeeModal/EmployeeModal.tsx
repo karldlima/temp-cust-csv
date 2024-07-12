@@ -12,8 +12,7 @@ import {
   EmployeeLineItem,
 } from "../../interfaces/employees";
 import { EmployeeForm } from "./EmployeeForm";
-
-type EmployeeAction = (employee: EmployeeLineItem) => Promise<string | Error>;
+import { EmployeeAction } from "../../hooks/useEmployee";
 
 interface EmployeeModalProps {
   loading: boolean;
