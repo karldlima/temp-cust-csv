@@ -43,7 +43,9 @@ export const useEmployee = () => {
       await sleep(2000);
       const employeeIndex = employees.findIndex(({ id }) => id === employee.id);
       const updatedEmployees = [...employees];
-      updatedEmployees[employeeIndex] = employee;
+      if (employeeIndex > -1) {
+        updatedEmployees[employeeIndex] = employee;
+      }
       setEmployees(updatedEmployees);
     } catch (e) {
       if (e instanceof Error) {

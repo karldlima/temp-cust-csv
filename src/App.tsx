@@ -57,7 +57,7 @@ function App() {
           setSelectedEmployee(employee);
         }}
       />
-      {isModalOpen ? (
+      {isModalOpen && (
         <EmployeeModal
           loading={isLoading}
           existingEmployee={selectedEmployee}
@@ -68,7 +68,7 @@ function App() {
             setSelectedEmployee(undefined);
           }}
         />
-      ) : undefined}
+      )}
     </Box>
   );
 }
