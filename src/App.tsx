@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { toast } from "react-toastify";
 import { Box, Button, Typography } from "@mui/material";
 import { EmployeeTable } from "./components/EmpoyeeTable/EmployeeTable";
 import { EmployeeLineItem } from "./interfaces/employees";
@@ -10,8 +11,12 @@ function App() {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedEmployee, setSelectedEmployee] =
     React.useState<EmployeeLineItem>();
-  const { employees, createEmployee, updateEmployee, isLoading } =
+  const { employees, createEmployee, updateEmployee, isLoading, error } =
     useEmployee();
+
+  useEffect(() => {
+    toast.error(error);
+  }, [error]);
 
   return (
     <Box sx={{ padding: 2 }}>
