@@ -48,15 +48,12 @@ export default function EmployeeModal({
           loading={loading}
           employee={existingEmployee || createDefaultEmployee()}
           handleSubmit={async (employee: EmployeeLineItem): Promise<void> => {
-            if (existingEmployee) {
-              updateEmployee(employee).then(
-                (status) => typeof status === "string" && toast.success(status)
-              );
-            } else {
-              createEmployee(employee).then(
-                (status) => typeof status === "string" && toast.success(status)
-              );
-            }
+            const actionMethod = existingEmployee
+              ? updateEmployee
+              : createEmployee;
+            actionMethod(employee).then(
+              (status) => typeof status === "string" && toast.success(status)
+            );
             handleClose();
           }}
         />
