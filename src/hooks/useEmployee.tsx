@@ -11,9 +11,12 @@ export const useEmployee = () => {
     try {
       setIsLoading(true);
       await sleep(2000);
-      setEmployees([] as EmployeeLineItem[]);
-    } catch (e: any) {
-      setError("Could not list employees");
+      setEmployees([]);
+    } catch (e) {
+      if (e instanceof Error) {
+        console.error(e);
+        setError("Could not list employees");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -24,8 +27,11 @@ export const useEmployee = () => {
       setIsLoading(true);
       await sleep(2000);
       setEmployees([...employees, { ...employee }]);
-    } catch (e: any) {
-      setError("Could not create employee");
+    } catch (e) {
+      if (e instanceof Error) {
+        console.error(e);
+        setError("Could not create employee");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -35,9 +41,15 @@ export const useEmployee = () => {
     try {
       setIsLoading(true);
       await sleep(2000);
-      setEmployees([...employees]);
-    } catch (e: any) {
-      setError("Could not update employee");
+      const employeeIndex = employees.findIndex(({ id }) => id === employee.id);
+      const updatedEmployees = [...employees];
+      updatedEmployees[employeeIndex] = employee;
+      setEmployees(updatedEmployees);
+    } catch (e) {
+      if (e instanceof Error) {
+        console.error(e);
+        setError("Could not update employee");
+      }
     } finally {
       setIsLoading(false);
     }

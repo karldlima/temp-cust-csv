@@ -15,11 +15,31 @@ export const EmployeeForm = ({
   handleSubmit,
 }: EmployeeFormProps) => {
   const validationSchema = yup.object({
-    name: yup.string().required(),
-    email: yup.string().required(),
-    phone: yup.date().required(),
-    occupation: yup.string().required(),
+    name: yup
+      .string()
+      .label("Name")
+      .max(50, "Name cannot be more than 50 characters")
+      .required(),
+    email: yup
+      .string()
+      .label("Email")
+      .email("Please enter a valid Email")
+      .max(60, "Email cannot be more than 60 characters")
+      .required(),
+    phone: yup
+      .string()
+      .label("Phone Number")
+      .matches(/^\d+$/, "Please enter a valid Phone Number")
+      .min(8, "Phone Number must be at least 8 digits")
+      .max(15, "Phone Number cannot be more than 15 digits")
+      .required(),
+    occupation: yup
+      .string()
+      .label("Occupation")
+      .max(20, "Occupation cannot be more than 20 characters")
+      .required(),
   });
+
   const formik = useFormik({
     initialValues: {
       name: employee.name,
@@ -29,12 +49,13 @@ export const EmployeeForm = ({
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async ({ name, email, phone, occupation }) => {
       await handleSubmit({
         ...employee,
-        name: values.name,
-        email: values.email,
-        phone: values.phone,
+        name,
+        email,
+        phone,
+        occupation,
       });
     },
   });
@@ -58,9 +79,9 @@ export const EmployeeForm = ({
         </Grid>
         <Grid item xs={6} sm={6}>
           <TextField
-            id="emailAddress"
-            name="emailAddress"
-            label="email"
+            id="email"
+            name="email"
+            label="Email"
             fullWidth
             disabled={loading}
             onChange={formik.handleChange}
@@ -74,7 +95,7 @@ export const EmployeeForm = ({
           <TextField
             id="phone"
             name="phone"
-            label="phone"
+            label="Phone Number"
             fullWidth
             disabled={loading}
             onChange={formik.handleChange}
@@ -88,7 +109,7 @@ export const EmployeeForm = ({
           <TextField
             id="occupation"
             name="occupation"
-            label="occupation"
+            label="Occupation"
             fullWidth
             disabled={loading}
             onChange={formik.handleChange}
@@ -112,7 +133,10 @@ export const EmployeeForm = ({
             justifyContent: "right !important;",
           }}
         >
-          <Button type="submit" disabled={formik.isSubmitting || loading}>
+          <Button
+            type="submit"
+            disabled={formik.isSubmitting || !formik.isValid || loading}
+          >
             Save
           </Button>
         </Grid>
