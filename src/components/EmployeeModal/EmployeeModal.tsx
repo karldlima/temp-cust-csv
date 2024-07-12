@@ -1,9 +1,16 @@
-import { Dialog, DialogContent } from "@mui/material";
+import {
+  Box,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import {
   createDefaultEmployee,
   EmployeeLineItem,
 } from "../../interfaces/employees";
-import { EmployeeForm } from "./EmployeeModalForm";
+import { EmployeeForm } from "./EmployeeForm";
 
 interface EmployeeModalProps {
   loading: boolean;
@@ -23,8 +30,19 @@ export default function EmployeeModal({
   updateEmployee,
   handleClose,
 }: EmployeeModalProps) {
+  const modalAction = !!existingEmployee ? "Update" : "Add";
   return (
     <Dialog fullWidth open onClose={handleClose}>
+      <DialogTitle>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box flexGrow={1}>{`${modalAction} Employee`}</Box>
+          <Box>
+            <IconButton onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+        </Box>
+      </DialogTitle>
       <DialogContent>
         <EmployeeForm
           loading={loading}
