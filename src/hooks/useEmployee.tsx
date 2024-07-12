@@ -22,22 +22,28 @@ export const useEmployee = () => {
     }
   };
 
-  const createEmployee = async (employee: EmployeeLineItem): Promise<void> => {
+  const createEmployee = async (
+    employee: EmployeeLineItem
+  ): Promise<string | Error> => {
     try {
       setIsLoading(true);
       await sleep(2000);
       setEmployees([...employees, { ...employee }]);
+      setIsLoading(false);
+      return `Employee ${employee.name} has been added`;
     } catch (e) {
       if (e instanceof Error) {
         console.error(e);
         setError("Could not create employee");
       }
-    } finally {
       setIsLoading(false);
+      return new Error();
     }
   };
 
-  const updateEmployee = async (employee: EmployeeLineItem): Promise<void> => {
+  const updateEmployee = async (
+    employee: EmployeeLineItem
+  ): Promise<string | Error> => {
     try {
       setIsLoading(true);
       await sleep(2000);
@@ -47,13 +53,15 @@ export const useEmployee = () => {
         updatedEmployees[employeeIndex] = employee;
       }
       setEmployees(updatedEmployees);
+      setIsLoading(false);
+      return `Employee ${employee.name} has been updated`;
     } catch (e) {
       if (e instanceof Error) {
         console.error(e);
         setError("Could not update employee");
       }
-    } finally {
       setIsLoading(false);
+      return new Error();
     }
   };
 
