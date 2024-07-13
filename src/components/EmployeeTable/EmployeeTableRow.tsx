@@ -1,6 +1,8 @@
 import { IconButton, TableCell, TableRow, Tooltip, Zoom } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { EmployeeLineItem } from "../../interfaces/employees";
+
+import { EmployeeLineItem } from "../../interfaces";
+
 interface EmployeeTableRowProps {
   employee: EmployeeLineItem;
   handleEditEmployee: (employee: EmployeeLineItem) => void;
@@ -9,7 +11,7 @@ interface EmployeeTableRowProps {
 export const EmployeeTableRow = ({
   employee,
   handleEditEmployee,
-}: EmployeeTableRowProps) => {
+}: EmployeeTableRowProps): JSX.Element => {
   const { name, email, phone, occupation } = employee ?? {};
 
   return (

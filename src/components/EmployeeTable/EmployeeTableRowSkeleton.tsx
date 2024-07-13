@@ -1,6 +1,6 @@
 import { Button, Skeleton, TableCell, TableRow } from "@mui/material";
 
-export const EmployeeTableRowSkeleton = () => {
+export const EmployeeTableRowSkeleton = (): JSX.Element => {
   return (
     <TableRow>
       <TableCell>

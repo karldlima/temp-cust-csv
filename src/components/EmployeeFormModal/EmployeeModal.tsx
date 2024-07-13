@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import {
   Box,
   Dialog,
@@ -5,11 +6,11 @@ import {
   DialogTitle,
   IconButton,
 } from "@mui/material";
-import { toast } from "react-toastify";
 import CloseIcon from "@mui/icons-material/Close";
-import { EmployeeLineItem } from "../../interfaces";
+
 import { EmployeeForm } from "./EmployeeForm";
-import { EmployeeAction } from "../../hooks/useEmployee";
+import { EmployeeLineItem } from "../../interfaces";
+import { EmployeeAction } from "../../hooks";
 import { createDefaultEmployee } from "../../utils";
 
 interface EmployeeModalProps {
@@ -20,13 +21,13 @@ interface EmployeeModalProps {
   handleClose: () => void;
 }
 
-export default function EmployeeModal({
+export const EmployeeModal = ({
   loading,
   existingEmployee,
   createEmployee,
   updateEmployee,
   handleClose,
-}: EmployeeModalProps) {
+}: EmployeeModalProps): JSX.Element => {
   const modalAction = !!existingEmployee ? "Update" : "Add";
   return (
     <Dialog fullWidth open onClose={handleClose}>
@@ -57,5 +58,5 @@ export default function EmployeeModal({
       </DialogContent>
     </Dialog>
   );
-}
+};
 EmployeeModal.displayName = "EmployeeModal";

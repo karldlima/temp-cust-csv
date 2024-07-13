@@ -3,9 +3,11 @@ import ReactDOM from "react-dom/client";
 import { ToastContainer } from "react-toastify";
 import { Global } from "@emotion/react";
 import { Theme, ThemeProvider } from "@mui/material/styles";
+
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { global, theme } from "./design-system/css";
+
 import "react-toastify/dist/ReactToastify.css";
 
 const root = ReactDOM.createRoot(

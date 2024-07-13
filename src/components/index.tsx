@@ -1,2 +1,2 @@
 export * from "./EmployeeTable";
-export * from "./EmployeeModal";
+export * from "./EmployeeFormModal";
