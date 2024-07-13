@@ -18,13 +18,13 @@ export const EmployeeForm = ({
     name: yup
       .string()
       .label("Name")
-      .max(50, "Name cannot be more than 50 characters")
+      .max(25, "Name cannot be more than 25 characters")
       .required(),
     email: yup
       .string()
       .label("Email")
       .email("Please enter a valid Email")
-      .max(60, "Email cannot be more than 60 characters")
+      .max(25, "Email cannot be more than 25 characters")
       .required(),
     phone: yup
       .string()
@@ -36,7 +36,7 @@ export const EmployeeForm = ({
     occupation: yup
       .string()
       .label("Occupation")
-      .max(20, "Occupation cannot be more than 20 characters")
+      .max(15, "Occupation cannot be more than 15 characters")
       .required(),
   });
 
@@ -130,7 +130,7 @@ export const EmployeeForm = ({
           sm={12}
           sx={{
             display: "flex !important",
-            justifyContent: "right !important;",
+            justifyContent: "right !important",
           }}
         >
           <Button
