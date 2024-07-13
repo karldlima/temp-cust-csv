@@ -3,7 +3,7 @@ import { TableCell, TableRow, Typography } from "@mui/material";
 interface NoRowsProps {
   title: string;
 }
-export const NoRows = ({ title }: NoRowsProps) => {
+export const NoRows = ({ title }: NoRowsProps): JSX.Element => {
   return (
     <TableRow>
       <TableCell colSpan={5}>
@@ -12,3 +12,4 @@ export const NoRows = ({ title }: NoRowsProps) => {
     </TableRow>
   );
 };
+NoRows.displayName = "NoRows";

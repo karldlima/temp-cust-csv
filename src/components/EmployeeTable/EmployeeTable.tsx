@@ -7,10 +7,9 @@ import {
   TableCell,
   Typography,
 } from "@mui/material";
-import { EmployeeTableRow } from "./EmployeeTableRow";
-import { EmployeeTableRowSkeleton } from "./EmployeeTableRowSkeleton";
-import { NoRows } from "./NoRows";
-import { EmployeeLineItem } from "../../interfaces/employees";
+
+import { EmployeeTableRow, EmployeeTableRowSkeleton, NoRows } from ".";
+import { EmployeeLineItem } from "../../interfaces";
 
 interface EmployeeTableProps {
   loading: boolean;
@@ -22,7 +21,7 @@ export const EmployeeTable = ({
   loading,
   employees,
   handleEditEmployee,
-}: EmployeeTableProps) => {
+}: EmployeeTableProps): JSX.Element => {
   return (
     <Grid item xs={12} md={12}>
       <Table>
@@ -67,3 +66,4 @@ export const EmployeeTable = ({
     </Grid>
   );
 };
+EmployeeTable.displayName = "EmployeeTable";

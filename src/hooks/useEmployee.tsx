@@ -1,6 +1,7 @@
 import * as React from "react";
-import { EmployeeLineItem } from "../interfaces/employees";
-import { sleep } from "../utils/sleep";
+
+import { EmployeeLineItem } from "../interfaces";
+import { sleep } from "../utils";
 
 export type EmployeeAction = (
   employee: EmployeeLineItem

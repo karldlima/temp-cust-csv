@@ -1,7 +1,7 @@
 import * as React from "react";
-import { EmployeeLineItem } from "../interfaces/employees";
-import { sleep } from "../utils/sleep";
-import { writeEmployeesToExcel } from "../utils/excel";
+
+import { EmployeeLineItem } from "../interfaces";
+import { sleep, writeEmployeesToExcel } from "../utils";
 
 export const useExcelExport = () => {
   const [isExporting, setIsExporting] = React.useState<boolean>(false);

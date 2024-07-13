@@ -1,7 +1,8 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { Grid, TextField, Button } from "@mui/material";
-import { EmployeeLineItem } from "../../interfaces/employees";
+
+import { EmployeeLineItem } from "../../interfaces";
 
 interface EmployeeFormProps {
   loading: boolean;
@@ -13,7 +14,7 @@ export const EmployeeForm = ({
   loading,
   employee,
   handleSubmit,
-}: EmployeeFormProps) => {
+}: EmployeeFormProps): JSX.Element => {
   const validationSchema = yup.object({
     name: yup
       .string()
@@ -144,3 +145,4 @@ export const EmployeeForm = ({
     </form>
   );
 };
+EmployeeForm.displayName = "EmployeeForm";
