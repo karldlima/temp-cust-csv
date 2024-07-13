@@ -67,3 +67,4 @@ export const EmployeeTable = ({
     </Grid>
   );
 };
+EmployeeTable.displayName = "EmployeeTable";

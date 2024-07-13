@@ -7,12 +7,10 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import CloseIcon from "@mui/icons-material/Close";
-import {
-  createDefaultEmployee,
-  EmployeeLineItem,
-} from "../../interfaces/employees";
+import { EmployeeLineItem } from "../../interfaces";
 import { EmployeeForm } from "./EmployeeForm";
 import { EmployeeAction } from "../../hooks/useEmployee";
+import { createDefaultEmployee } from "../../utils";
 
 interface EmployeeModalProps {
   loading: boolean;
@@ -60,3 +58,4 @@ export default function EmployeeModal({
     </Dialog>
   );
 }
+EmployeeModal.displayName = "EmployeeModal";

@@ -23,3 +23,4 @@ export const EmployeeTableRowSkeleton = () => {
     </TableRow>
   );
 };
+EmployeeTableRowSkeleton.displayName = "EmployeeTableRowSkeleton";

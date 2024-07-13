@@ -12,3 +12,4 @@ export const NoRows = ({ title }: NoRowsProps) => {
     </TableRow>
   );
 };
+NoRows.displayName = "NoRows";

@@ -10,12 +10,14 @@ export const EmployeeTableRow = ({
   employee,
   handleEditEmployee,
 }: EmployeeTableRowProps) => {
+  const { name, email, phone, occupation } = employee ?? {};
+
   return (
     <TableRow>
-      <TableCell>{employee.name}</TableCell>
-      <TableCell>{employee.email}</TableCell>
-      <TableCell>{employee.phone}</TableCell>
-      <TableCell>{employee.occupation}</TableCell>
+      <TableCell>{name}</TableCell>
+      <TableCell>{email}</TableCell>
+      <TableCell>{phone}</TableCell>
+      <TableCell>{occupation}</TableCell>
       <TableCell>
         <Tooltip placement="top" title="Edit" TransitionComponent={Zoom}>
           <IconButton
@@ -34,3 +36,4 @@ export const EmployeeTableRow = ({
     </TableRow>
   );
 };
+EmployeeTableRow.displayName = "EmployeeTableRow";

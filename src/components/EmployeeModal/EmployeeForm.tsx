@@ -144,3 +144,4 @@ export const EmployeeForm = ({
     </form>
   );
 };
+EmployeeForm.displayName = "EmployeeForm";

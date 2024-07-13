@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 import { Box, Button, Typography } from "@mui/material";
-import { EmployeeTable } from "./components/EmpoyeeTable/EmployeeTable";
-import { EmployeeLineItem } from "./interfaces/employees";
-import { useEmployee } from "./hooks/useEmployee";
+import { EmployeeTable } from "./components/EmployeeTable/EmployeeTable";
+import { useEmployee } from "./hooks";
 import EmployeeModal from "./components/EmployeeModal/EmployeeModal";
 import { writeEmployeesToExcel } from "./utils/excel";
+import { EmployeeLineItem } from "./interfaces";
 
 function App() {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
