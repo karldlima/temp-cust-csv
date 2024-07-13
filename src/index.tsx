@@ -1,8 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { ToastContainer } from "react-toastify";
+import { Global } from "@emotion/react";
+import { Theme, ThemeProvider } from "@mui/material/styles";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { global, theme } from "./design-system/css";
 import "react-toastify/dist/ReactToastify.css";
 
 const root = ReactDOM.createRoot(
@@ -10,8 +13,11 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <App />
-    <ToastContainer position="bottom-center" autoClose={3000} />
+    <ThemeProvider theme={theme}>
+      <Global styles={(theme) => global(theme as Theme)} />
+      <App />
+      <ToastContainer position="bottom-center" autoClose={3000} />
+    </ThemeProvider>
   </React.StrictMode>
 );
 
