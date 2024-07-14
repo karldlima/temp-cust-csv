@@ -56,6 +56,7 @@ const App = (): JSX.Element => {
               color="primary"
               variant="contained"
               disabled={isLoading}
+              size="large"
               onClick={() => {
                 setSelectedEmployee(undefined);
                 setIsModalOpen(true);
@@ -67,6 +68,7 @@ const App = (): JSX.Element => {
               color="primary"
               variant="contained"
               disabled={!employees.length || isExporting}
+              size="large"
               onClick={async () => {
                 await exportExployees(employees).then(
                   (status) =>
