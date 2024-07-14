@@ -10,16 +10,11 @@ export const writeEmployeesToExcel = async (
       try {
         const workbook = new ExcelJs.Workbook();
         const workSheet = workbook.addWorksheet("Employees");
-        workSheet.columns = ["id", "name", "email", "phone", "occupation"];
-        workSheet.addRow(["id", "name", "email", "phone", "occupation"]);
-        for (const employee of employees) {
-          workSheet.addRow([
-            employee.id,
-            employee.name,
-            employee.email,
-            employee.phone,
-            employee.occupation,
-          ]);
+        const fields = ["id", "name", "email", "phone", "occupation"];
+        workSheet.columns = fields;
+        workSheet.addRow(fields);
+        for (const { id, name, email, phone, occupation } of employees) {
+          workSheet.addRow([id, name, email, phone, occupation]);
         }
 
         const data = await workbook.xlsx.writeBuffer();
@@ -33,8 +28,8 @@ export const writeEmployeesToExcel = async (
         anchor.click();
         window.URL.revokeObjectURL(url);
         resolve(true);
-      } catch (error) {
-        reject(error);
+      } catch (e) {
+        reject(e);
       }
     })();
   });
