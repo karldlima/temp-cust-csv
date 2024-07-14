@@ -5,6 +5,8 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -28,9 +30,13 @@ export const EmployeeModal = ({
   handleClose,
   existingEmployee,
 }: EmployeeModalProps): JSX.Element => {
+  const theme = useTheme();
+  const tabletPlus = useMediaQuery(theme.breakpoints.up("sm"));
+
   const modalAction = !!existingEmployee ? "Update" : "Add";
+
   return (
-    <Dialog fullWidth open onClose={handleClose}>
+    <Dialog fullScreen={!tabletPlus} fullWidth open onClose={handleClose}>
       <DialogTitle>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Box flexGrow={1}>{`${modalAction} Employee`}</Box>
@@ -45,7 +51,7 @@ export const EmployeeModal = ({
         <EmployeeForm
           loading={loading}
           employee={existingEmployee || createDefaultEmployee()}
-          handleSubmit={async (employee: EmployeeLineItem): Promise<void> => {
+          onSubmit={async (employee: EmployeeLineItem): Promise<void> => {
             const actionMethod = existingEmployee
               ? updateEmployee
               : createEmployee;

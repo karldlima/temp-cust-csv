@@ -1,11 +1,11 @@
 import {
-  Grid,
   Table,
   TableBody,
   TableRow,
   TableHead,
   TableCell,
   Typography,
+  tableCellClasses,
 } from "@mui/material";
 
 import { EmployeeTableRow, EmployeeTableRowSkeleton, NoRows } from ".";
@@ -23,47 +23,40 @@ export const EmployeeTable = ({
   handleEditEmployee,
 }: EmployeeTableProps): JSX.Element => {
   return (
-    <Grid item xs={12} md={12}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              <Typography>Name</Typography>
+    <Table
+      sx={{
+        [`& .${tableCellClasses.root}`]: {
+          borderBottom: "none",
+        },
+      }}
+    >
+      <TableHead sx={{ backgroundColor: "secondary.dark" }}>
+        <TableRow>
+          {["Name", "Email", "Phone", "Occupation", "Actions"].map((header) => (
+            <TableCell key={header}>
+              <Typography sx={{ fontWeight: "bold" }}>{header}</Typography>
             </TableCell>
-            <TableCell>
-              <Typography>Email</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography>Phone</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography>Occupation</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography>Actions</Typography>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {loading
-            ? Array.from({ length: 10 }, (_, index) => (
-                <EmployeeTableRowSkeleton />
-              ))
-            : employees?.map((row) => {
-                return (
-                  <EmployeeTableRow
-                    employee={row}
-                    handleEditEmployee={handleEditEmployee}
-                  />
-                );
-              })}
-
-          {!loading && !employees.length ? (
-            <NoRows title={"Employees"} />
-          ) : null}
-        </TableBody>
-      </Table>
-    </Grid>
+          ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {loading
+          ? Array.from({ length: 10 }, (_, _index) => (
+              <EmployeeTableRowSkeleton />
+            ))
+          : employees?.map((row, i) => {
+              return (
+                <EmployeeTableRow
+                  key={i}
+                  employee={row}
+                  handleEditEmployee={handleEditEmployee}
+                  odd={i % 2 !== 0}
+                />
+              );
+            })}
+        {!loading && !employees.length ? <NoRows title={"Employees"} /> : null}
+      </TableBody>
+    </Table>
   );
 };
 EmployeeTable.displayName = "EmployeeTable";

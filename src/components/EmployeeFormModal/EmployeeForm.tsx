@@ -1,19 +1,32 @@
+/** @jsxImportSource @emotion/react */
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { Grid, TextField, Button } from "@mui/material";
+import { TextField, Button, Theme } from "@mui/material";
+import { css } from "@emotion/react";
 
 import { EmployeeLineItem } from "../../interfaces";
+
+const formCss = (theme: Theme) =>
+  css({
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "12px",
+    "> div": { flex: "1 1 100%" },
+    [theme.breakpoints.up("sm")]: {
+      "> div": { flex: "1 1 calc(50% - 6px)" },
+    },
+  });
 
 interface EmployeeFormProps {
   loading: boolean;
   employee: EmployeeLineItem;
-  handleSubmit: (employee: EmployeeLineItem) => Promise<void>;
+  onSubmit: (employee: EmployeeLineItem) => Promise<void>;
 }
 
 export const EmployeeForm = ({
   loading,
   employee,
-  handleSubmit,
+  onSubmit,
 }: EmployeeFormProps): JSX.Element => {
   const validationSchema = yup.object({
     name: yup
@@ -41,17 +54,28 @@ export const EmployeeForm = ({
       .required(),
   });
 
-  const formik = useFormik({
+  const { name, email, phone, occupation } = employee ?? {};
+
+  const {
+    handleSubmit,
+    handleChange,
+    handleBlur,
+    values,
+    errors,
+    touched,
+    isValid,
+    isSubmitting,
+  } = useFormik({
     initialValues: {
-      name: employee.name,
-      email: employee.email,
-      phone: employee.phone,
-      occupation: employee.occupation,
+      name: name,
+      email: email,
+      phone: phone,
+      occupation: occupation,
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
     onSubmit: async ({ name, email, phone, occupation }) => {
-      await handleSubmit({
+      await onSubmit({
         ...employee,
         name,
         email,
@@ -62,86 +86,60 @@ export const EmployeeForm = ({
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Grid container spacing={3}>
-        <Grid item xs={6} sm={6}>
-          <TextField
-            id="name"
-            name="name"
-            label="Name"
-            fullWidth
-            disabled={loading}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.name}
-            error={formik.touched.name && Boolean(formik.errors.name)}
-            helperText={formik.touched.name ? formik.errors.name : ""}
-          />
-        </Grid>
-        <Grid item xs={6} sm={6}>
-          <TextField
-            id="email"
-            name="email"
-            label="Email"
-            fullWidth
-            disabled={loading}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.email}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email ? formik.errors.email : ""}
-          />
-        </Grid>
-        <Grid item xs={6} sm={6}>
-          <TextField
-            id="phone"
-            name="phone"
-            label="Phone Number"
-            fullWidth
-            disabled={loading}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.phone}
-            error={formik.touched.phone && Boolean(formik.errors.phone)}
-            helperText={formik.touched.phone ? formik.errors.phone : ""}
-          />
-        </Grid>
-        <Grid item xs={6} sm={6}>
-          <TextField
-            id="occupation"
-            name="occupation"
-            label="Occupation"
-            fullWidth
-            disabled={loading}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.occupation}
-            error={
-              formik.touched.occupation && Boolean(formik.errors.occupation)
-            }
-            helperText={
-              formik.touched.occupation ? formik.errors.occupation : ""
-            }
-          />
-        </Grid>
-        <Grid item xs={6} sm={6} />
-        <Grid
-          item
-          xs={12}
-          sm={12}
-          sx={{
-            display: "flex !important",
-            justifyContent: "right !important",
-          }}
-        >
-          <Button
-            type="submit"
-            disabled={formik.isSubmitting || !formik.isValid || loading}
-          >
-            Save
-          </Button>
-        </Grid>
-      </Grid>
+    <form css={(theme) => formCss(theme as Theme)} onSubmit={handleSubmit}>
+      <TextField
+        id="name"
+        name="name"
+        label="Name *"
+        disabled={loading}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values.name}
+        error={touched.name && Boolean(errors.name)}
+        helperText={errors.name ?? ""}
+      />
+      <TextField
+        id="email"
+        name="email"
+        label="Email *"
+        disabled={loading}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values.email}
+        error={touched.email && Boolean(errors.email)}
+        helperText={errors.email ?? ""}
+      />
+      <TextField
+        id="phone"
+        name="phone"
+        label="Phone Number *"
+        disabled={loading}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values.phone}
+        error={touched.phone && Boolean(errors.phone)}
+        helperText={errors.phone ?? ""}
+      />
+      <TextField
+        id="occupation"
+        name="occupation"
+        label="Occupation *"
+        disabled={loading}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values.occupation}
+        error={touched.occupation && Boolean(errors.occupation)}
+        helperText={errors.occupation ?? ""}
+      />
+      <Button
+        type="submit"
+        variant="contained"
+        size="large"
+        disabled={isSubmitting || !isValid || loading}
+        sx={{ marginTop: 3, marginLeft: "auto" }}
+      >
+        Save
+      </Button>
     </form>
   );
 };
