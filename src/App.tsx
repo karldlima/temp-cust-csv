@@ -4,19 +4,22 @@ import { Box, Button, Typography } from "@mui/material";
 
 import { EmployeeModal, EmployeeTable } from "./components";
 import { EmployeeLineItem } from "./interfaces";
-import { useEmployee } from "./hooks";
-import { writeEmployeesToExcel } from "./utils";
+import { useEmployee, useExcelExport } from "./hooks";
 
-function App(): JSX.Element {
+const App = (): JSX.Element => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedEmployee, setSelectedEmployee] =
     React.useState<EmployeeLineItem>();
   const { employees, createEmployee, updateEmployee, isLoading, error } =
     useEmployee();
+  const { exportExployees, isExporting, exportError } = useExcelExport();
 
   useEffect(() => {
-    toast.error(error);
+    !!error && toast.error(error);
   }, [error]);
+  useEffect(() => {
+    !!exportError && toast.error(exportError);
+  }, [exportError]);
 
   return (
     <Box sx={{ padding: 2 }}>
@@ -32,19 +35,18 @@ function App(): JSX.Element {
           <Button
             color="primary"
             sx={{ marginRight: 1 }}
+            disabled={!employees.length || isExporting}
             onClick={async () => {
-              if (employees.length) {
-                await writeEmployeesToExcel(employees);
-                await writeEmployeesToExcel(employees);
-              } else {
-                alert("No employees to export");
-              }
+              await exportExployees(employees).then(
+                (status) => typeof status === "string" && toast.success(status)
+              );
             }}
           >
             Export
           </Button>
           <Button
             color="primary"
+            disabled={isLoading}
             onClick={() => {
               setSelectedEmployee(undefined);
               setIsModalOpen(true);
@@ -76,6 +78,6 @@ function App(): JSX.Element {
       )}
     </Box>
   );
-}
+};
 
 export default App;

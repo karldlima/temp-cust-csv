@@ -15,18 +15,18 @@ import { createDefaultEmployee } from "../../utils";
 
 interface EmployeeModalProps {
   loading: boolean;
-  existingEmployee?: EmployeeLineItem;
   createEmployee: EmployeeAction;
   updateEmployee: EmployeeAction;
   handleClose: () => void;
+  existingEmployee?: EmployeeLineItem;
 }
 
 export const EmployeeModal = ({
   loading,
-  existingEmployee,
   createEmployee,
   updateEmployee,
   handleClose,
+  existingEmployee,
 }: EmployeeModalProps): JSX.Element => {
   const modalAction = !!existingEmployee ? "Update" : "Add";
   return (

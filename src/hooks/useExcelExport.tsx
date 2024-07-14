@@ -5,28 +5,29 @@ import { sleep, writeEmployeesToExcel } from "../utils";
 
 export const useExcelExport = () => {
   const [isExporting, setIsExporting] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<string | null>(null);
+  const [exportError, setExportError] = React.useState<string | null>(null);
 
   const exportExployees = async (
     employees: EmployeeLineItem[]
-  ): Promise<void> => {
+  ): Promise<string | Error> => {
     try {
       setIsExporting(true);
       await writeEmployeesToExcel(employees);
       await sleep(2000);
-      return;
+      setIsExporting(false);
+      return "Employee data has been exported";
     } catch (e) {
       if (e instanceof Error) {
         console.error(e);
-        setError("Could not export employees");
+        setExportError(`Could not export employees: ${e}`);
       }
-    } finally {
       setIsExporting(false);
+      return e as Error;
     }
   };
   return {
     exportExployees,
     isExporting,
-    error,
+    exportError,
   };
 };
