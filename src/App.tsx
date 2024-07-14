@@ -55,7 +55,7 @@ const App = (): JSX.Element => {
         </Box>
       </Box>
       <EmployeeTable
-        loading={true}
+        loading={isLoading}
         employees={employees}
         handleEditEmployee={(employee: EmployeeLineItem): void => {
           setIsModalOpen(true);
