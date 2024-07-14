@@ -46,10 +46,10 @@ export const useEmployee = () => {
     } catch (e) {
       if (e instanceof Error) {
         console.error(e);
-        setError(errorMessage);
+        setError(`${errorMessage}: ${e}`);
       }
       setIsLoading(false);
-      return new Error();
+      return e as Error;
     }
   };
 
