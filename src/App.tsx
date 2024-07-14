@@ -7,7 +7,7 @@ import { EmployeeLineItem } from "./interfaces";
 import { useEmployee } from "./hooks";
 import { writeEmployeesToExcel } from "./utils";
 
-function App(): JSX.Element {
+const App = (): JSX.Element => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedEmployee, setSelectedEmployee] =
     React.useState<EmployeeLineItem>();
@@ -55,7 +55,7 @@ function App(): JSX.Element {
         </Box>
       </Box>
       <EmployeeTable
-        loading={isLoading}
+        loading={true}
         employees={employees}
         handleEditEmployee={(employee: EmployeeLineItem): void => {
           setIsModalOpen(true);
@@ -76,6 +76,6 @@ function App(): JSX.Element {
       )}
     </Box>
   );
-}
+};
 
 export default App;
