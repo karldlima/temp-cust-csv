@@ -20,17 +20,6 @@ export const global = (theme: Theme) => css`
 
   body {
     margin: 0;
-    display: flex;
     min-height: 100vh;
-  }
-
-  #root {
-    width: 100%;
-  }
-
-  ${theme.breakpoints.up("md")} {
-    :root {
-      background-color: ${theme.palette.secondary.main};
-    }
   }
 `;

@@ -1,10 +1,35 @@
+/** @jsxImportSource @emotion/react */
 import React, { useEffect } from "react";
 import { toast } from "react-toastify";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, Theme } from "@mui/material";
+import { css } from "@emotion/react";
 
 import { EmployeeModal, EmployeeTable } from "./components";
 import { EmployeeLineItem } from "./interfaces";
 import { useEmployee, useExcelExport } from "./hooks";
+
+const appContainerCss = {
+  self: css({
+    padding: "30px",
+    maxWidth: "1000px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "16px",
+    margin: "0 auto",
+  }),
+  controlContainer: (theme: Theme) =>
+    css({
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-start",
+      gap: "16px",
+      [theme.breakpoints.up("sm")]: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+      },
+    }),
+};
 
 const App = (): JSX.Element => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -22,62 +47,59 @@ const App = (): JSX.Element => {
   }, [exportError]);
 
   return (
-    <Box sx={{ padding: 2 }}>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography variant="h5">Social Pro Tech Task</Typography>
-        <Box>
-          <Button
-            color="primary"
-            sx={{ marginRight: 1 }}
-            disabled={!employees.length || isExporting}
-            onClick={async () => {
-              await exportExployees(employees).then(
-                (status) => typeof status === "string" && toast.success(status)
-              );
-            }}
-          >
-            Export
-          </Button>
-          <Button
-            color="primary"
-            disabled={isLoading}
-            onClick={() => {
-              setSelectedEmployee(undefined);
-              setIsModalOpen(true);
-            }}
-          >
-            Add
-          </Button>
+    <main>
+      <Box css={appContainerCss.self}>
+        <Box css={(theme) => appContainerCss.controlContainer(theme as Theme)}>
+          <Typography variant="h4">Manage Employees</Typography>
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <Button
+              color="primary"
+              variant="contained"
+              disabled={isLoading}
+              onClick={() => {
+                setSelectedEmployee(undefined);
+                setIsModalOpen(true);
+              }}
+            >
+              Add
+            </Button>
+            <Button
+              color="primary"
+              variant="contained"
+              disabled={!employees.length || isExporting}
+              onClick={async () => {
+                await exportExployees(employees).then(
+                  (status) =>
+                    typeof status === "string" && toast.success(status)
+                );
+              }}
+            >
+              Export
+            </Button>
+          </Box>
         </Box>
-      </Box>
-      <EmployeeTable
-        loading={isLoading}
-        employees={employees}
-        handleEditEmployee={(employee: EmployeeLineItem): void => {
-          setIsModalOpen(true);
-          setSelectedEmployee(employee);
-        }}
-      />
-      {isModalOpen && (
-        <EmployeeModal
+        <EmployeeTable
           loading={isLoading}
-          existingEmployee={selectedEmployee}
-          createEmployee={createEmployee}
-          updateEmployee={updateEmployee}
-          handleClose={(): void => {
-            setIsModalOpen(false);
-            setSelectedEmployee(undefined);
+          employees={employees}
+          handleEditEmployee={(employee: EmployeeLineItem): void => {
+            setIsModalOpen(true);
+            setSelectedEmployee(employee);
           }}
         />
-      )}
-    </Box>
+        {isModalOpen && (
+          <EmployeeModal
+            loading={isLoading}
+            existingEmployee={selectedEmployee}
+            createEmployee={createEmployee}
+            updateEmployee={updateEmployee}
+            handleClose={(): void => {
+              setIsModalOpen(false);
+              setSelectedEmployee(undefined);
+            }}
+          />
+        )}
+      </Box>
+    </main>
   );
 };
-
 export default App;
