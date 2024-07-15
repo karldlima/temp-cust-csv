@@ -1,4 +1,5 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
+import { useImmer } from "use-immer";
 
 import { EmployeeLineItem } from "../interfaces";
 import { sleep } from "../utils";
@@ -8,11 +9,11 @@ export type EmployeeAction = (
 ) => Promise<string | Error>;
 
 export const useEmployee = () => {
-  const [employees, setEmployees] = React.useState<EmployeeLineItem[]>([]);
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const [error, setError] = React.useState<string | null>(null);
+  const [employees, setEmployees] = useImmer<EmployeeLineItem[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     listEmployees();
   }, []);
 
@@ -58,7 +59,10 @@ export const useEmployee = () => {
   ): Promise<string | Error> => {
     return handleEmployeeAction(
       employee,
-      (emp) => setEmployees([...employees, { ...emp }]),
+      (emp) =>
+        setEmployees((draft) => {
+          draft.push({ ...emp });
+        }),
       `Employee ${employee.name} has been added`,
       "Could not create employee"
     );
@@ -69,14 +73,13 @@ export const useEmployee = () => {
   ): Promise<string | Error> => {
     return handleEmployeeAction(
       employee,
-      (emp) => {
-        const employeeIndex = employees.findIndex(({ id }) => id === emp.id);
-        const updatedEmployees = [...employees];
-        if (employeeIndex > -1) {
-          updatedEmployees[employeeIndex] = emp;
-        }
-        setEmployees(updatedEmployees);
-      },
+      (emp) =>
+        setEmployees((draft) => {
+          const employeeIndex = draft.findIndex(({ id }) => id === emp.id);
+          if (employeeIndex > -1) {
+            draft[employeeIndex] = emp;
+          }
+        }),
       `Employee ${employee.name} has been updated`,
       "Could not update employee"
     );

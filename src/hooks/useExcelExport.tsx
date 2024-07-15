@@ -1,11 +1,11 @@
-import * as React from "react";
+import { useState } from "react";
 
 import { EmployeeLineItem } from "../interfaces";
 import { sleep, writeEmployeesToExcel } from "../utils";
 
 export const useExcelExport = () => {
-  const [isExporting, setIsExporting] = React.useState<boolean>(false);
-  const [exportError, setExportError] = React.useState<string | null>(null);
+  const [isExporting, setIsExporting] = useState<boolean>(false);
+  const [exportError, setExportError] = useState<string | null>(null);
 
   const exportExployees = async (
     employees: EmployeeLineItem[]
