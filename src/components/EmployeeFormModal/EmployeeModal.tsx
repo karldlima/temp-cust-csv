@@ -47,7 +47,7 @@ export const EmployeeModal = ({
           </Box>
         </Box>
       </DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ paddingTop: "24px !important" }}>
         <EmployeeForm
           loading={loading}
           employee={existingEmployee || createDefaultEmployee()}

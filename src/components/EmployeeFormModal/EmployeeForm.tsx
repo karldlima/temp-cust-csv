@@ -1,10 +1,40 @@
 /** @jsxImportSource @emotion/react */
-import { useFormik } from "formik";
+import { forwardRef } from "react";
+import { FormikProps, useFormik } from "formik";
 import * as yup from "yup";
 import { TextField, Button, Theme } from "@mui/material";
 import { css } from "@emotion/react";
 
 import { EmployeeLineItem } from "../../interfaces";
+
+interface CustomTextFieldProps {
+  id: string;
+  name: string;
+  label: string;
+  formik: FormikProps<any>;
+  loading: boolean;
+}
+
+const CustomTextField = forwardRef<HTMLInputElement, CustomTextFieldProps>(
+  ({ id, name, label, formik, loading, ...rest }, ref) => {
+    const { handleChange, handleBlur, values, touched, errors } = formik;
+    return (
+      <TextField
+        id={id}
+        name={name}
+        label={`${label} *`}
+        disabled={loading}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values[name]}
+        error={touched[name] && Boolean(errors[name])}
+        helperText={(errors[name] as string) ?? ""}
+        inputRef={ref}
+        {...rest}
+      />
+    );
+  }
+);
 
 const formCss = (theme: Theme) =>
   css({
@@ -54,18 +84,16 @@ export const EmployeeForm = ({
       .required(),
   });
 
+  const fields = [
+    { id: "name", name: "name", label: "Name" },
+    { id: "email", name: "email", label: "Email" },
+    { id: "phone", name: "phone", label: "Phone Number" },
+    { id: "occupation", name: "occupation", label: "Occupation" },
+  ];
+
   const { name, email, phone, occupation } = employee ?? {};
 
-  const {
-    handleSubmit,
-    handleChange,
-    handleBlur,
-    values,
-    errors,
-    touched,
-    isValid,
-    isSubmitting,
-  } = useFormik({
+  const formik = useFormik({
     initialValues: {
       name: name,
       email: email,
@@ -86,56 +114,25 @@ export const EmployeeForm = ({
   });
 
   return (
-    <form css={(theme) => formCss(theme as Theme)} onSubmit={handleSubmit}>
-      <TextField
-        id="name"
-        name="name"
-        label="Name *"
-        disabled={loading}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        value={values.name}
-        error={touched.name && Boolean(errors.name)}
-        helperText={errors.name ?? ""}
-      />
-      <TextField
-        id="email"
-        name="email"
-        label="Email *"
-        disabled={loading}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        value={values.email}
-        error={touched.email && Boolean(errors.email)}
-        helperText={errors.email ?? ""}
-      />
-      <TextField
-        id="phone"
-        name="phone"
-        label="Phone Number *"
-        disabled={loading}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        value={values.phone}
-        error={touched.phone && Boolean(errors.phone)}
-        helperText={errors.phone ?? ""}
-      />
-      <TextField
-        id="occupation"
-        name="occupation"
-        label="Occupation *"
-        disabled={loading}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        value={values.occupation}
-        error={touched.occupation && Boolean(errors.occupation)}
-        helperText={errors.occupation ?? ""}
-      />
+    <form
+      css={(theme) => formCss(theme as Theme)}
+      onSubmit={formik.handleSubmit}
+    >
+      {fields.map((field) => (
+        <CustomTextField
+          key={field.id}
+          id={field.id}
+          name={field.name}
+          label={field.label}
+          formik={formik}
+          loading={loading}
+        />
+      ))}
       <Button
         type="submit"
         variant="contained"
         size="large"
-        disabled={isSubmitting || !isValid || loading}
+        disabled={formik.isSubmitting || !formik.isValid || loading}
         sx={{ marginTop: 3, marginLeft: "auto" }}
       >
         Save
